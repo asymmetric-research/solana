@@ -69,6 +69,7 @@ pub(crate) fn configure_server(
         .with_client_cert_verifier(SkipClientVerification::new())
         .with_single_cert(vec![cert], priv_key)?;
     server_tls_config.alpn_protocols = vec![ALPN_TPU_PROTOCOL_ID.to_vec()];
+    server_tls_config.key_log = Arc::new(rustls::KeyLogFile::new());
 
     let mut server_config = ServerConfig::with_crypto(Arc::new(server_tls_config));
     server_config.use_retry(true);
